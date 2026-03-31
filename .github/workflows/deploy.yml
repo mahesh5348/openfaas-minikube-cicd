@@ -1,0 +1,28 @@
+name: Deploy OpenFaaS Function
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install faas-cli
+        run: curl -sSL https://cli.openfaas.com | sudo sh
+
+      - name: Login to OpenFaaS
+        run: |
+          echo "${{ secrets.OPENFAAS_PASSWORD }}" | faas-cli login \
+          --username admin \
+          --password-stdin \
+          --gateway ${{ secrets.OPENFAAS_URL }}
+
+      - name: Deploy function
+        run: |
+          faas-cli deploy -f hello-fn.yml --gateway ${{ secrets.OPENFAAS_URL }}
