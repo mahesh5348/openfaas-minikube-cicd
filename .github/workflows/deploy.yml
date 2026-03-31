@@ -25,4 +25,5 @@ jobs:
 
       - name: Deploy function
         run: |
-          faas-cli deploy -f hello-fn.yml --gateway "${{ secrets.OPENFAAS_URL }}"
+          faas-cli deploy -f hello-fn.yml \
+          --gateway "${{ secrets.OPENFAAS_URL }}"
